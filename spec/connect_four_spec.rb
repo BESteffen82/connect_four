@@ -40,4 +40,12 @@ describe ConnectFour do
 			end		
 		end
 	end
+
+	describe '#play_round' do
+		context 'when playing one turn by each player' do
+			before do
+				
+			end
+		end
+	end
 end
