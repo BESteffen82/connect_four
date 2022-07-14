@@ -11,9 +11,20 @@ class ConnectFour
 	RED_CIRCLE = "\u001b[31m\u25cf".freeze
 
 	def initialize
-		@board = Array.new(6){Array.new(7){EMPTY_CIRCLE}}
+		@board = Array.new(6){Array.new(7,EMPTY_CIRCLE)}
 		@player_one = nil  
 		@player_two = nil
+	end
+
+	def setup_game
+		intro_message
+		create_player_one
+		create_player_two		
+	end
+
+	def play_game		
+		setup_game		
+		print_board
 	end
 	
 	def intro_message
@@ -29,14 +40,30 @@ INTRO
 	end
 
 	def create_player_one
-		puts "Player one, what is your name?"
+		puts "\nPlayer one, what is your name?"
 		@player_one = Player.new(gets.chomp, YELLOW_CIRCLE)
+		puts "\n"		
 	end
 
 	def create_player_two
 		puts "Player two, what is your name?"
 		@player_two = Player.new(gets.chomp, RED_CIRCLE)
+		puts "\n"
+	end
+	
+	def print_board
+		puts 
+		@board.each do |row|			
+			row.each do |cell|
+				print cell
+				print ' '
+			end
+			print "\n"
+		end
+		puts "\u001b[96m0 1 2 3 4 5 6"
+		puts		
 	end
 end
 
 new_game = ConnectFour.new
+new_game.play_game
