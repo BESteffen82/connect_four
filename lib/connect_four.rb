@@ -3,7 +3,7 @@ require 'pry-byebug'
 
 class ConnectFour	
 	attr_reader :board
-	attr_accessor :player_one, :player_two
+	attr_accessor :player_one, :player_two, :move, :current_player
 
 
 	EMPTY_CIRCLE = "\e[37m\u25cb".freeze
@@ -19,14 +19,20 @@ class ConnectFour
 	def setup_game
 		intro_message
 		create_player_one
-		create_player_two		
+		create_player_two
+		@current_player = [@player_one, @player_two].sample		
 	end
 
 	def play_game		
-		setup_game		
-		print_board
+		setup_game
+		play_round		
 	end
-	
+
+	def play_round
+		print_board
+		prompt_player
+	end
+
 	def intro_message
 		intro = <<-INTRO
 
@@ -50,6 +56,22 @@ INTRO
 		@player_two = Player.new(gets.chomp, RED_CIRCLE)
 		puts "\n"
 	end
+
+	def prompt_player
+		puts "\e[37m#{@current_player.name} pick a column:"
+	end
+
+	def prompt_move
+		loop do		
+			@move = gets.chomp.to_i
+			return @move if valid_move?(move)					
+			puts "Invalid input. Enter a column number between 1 and 7"
+		end
+	end
+
+	def valid_move?(move)
+		@move.is_a?(Integer) && @move.between?(1, 7)
+	end
 	
 	def print_board
 		puts 
@@ -62,7 +84,7 @@ INTRO
 		end
 		puts "\u001b[96m0 1 2 3 4 5 6"
 		puts		
-	end
+	end	
 end
 
 new_game = ConnectFour.new
