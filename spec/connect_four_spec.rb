@@ -41,10 +41,30 @@ describe ConnectFour do
 		end
 	end
 
-	describe '#play_round' do
-		context 'when playing one turn by each player' do
+	describe '#prompt_move' do
+		context 'move is a valid input' do
 			before do
-				
+				allow(game).to receive(:gets).and_return('3\n')
+			end
+			
+			it 'returns move and stops the loop' do
+				error_message = 'Invalid input. Enter a column number between 1 and 7'
+				expect(game).to_not receive(:puts).with(error_message)				
+				game.prompt_move
+			end
+		end
+			
+		context 'when given one invalid input, then a valid input' do
+			before do
+				letter = 'a'
+				valid_input = '2'
+				allow(game).to receive(:gets).and_return(letter, valid_input)
+			end
+
+			it 'completes loop and displays error message once' do				
+				error_message = 'Invalid input. Enter a column number between 1 and 7'				
+				expect(game).to receive(:puts).with(error_message).once
+				game.prompt_move
 			end
 		end
 	end
