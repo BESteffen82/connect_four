@@ -1,9 +1,8 @@
-require_relative './player.rb'
+require_relative './player'
 require 'pry-byebug'
 
 class ConnectFour	
-	attr_reader :board
-	attr_accessor :player_one, :player_two, :move, :current_player
+	attr_accessor :player_one, :player_two, :move, :current_player, :board
 
 
 	EMPTY_CIRCLE = "\e[37m\u25cb".freeze
@@ -13,7 +12,7 @@ class ConnectFour
 	def initialize
 		@board = Array.new(6){Array.new(7,EMPTY_CIRCLE)}
 		@player_one = nil  
-		@player_two = nil
+		@player_two = nil				
 	end
 
 	def setup_game
@@ -24,14 +23,15 @@ class ConnectFour
 	end
 
 	def play_game		
-		setup_game
-		play_round		
+		setup_game		
+		play_round 		
 	end
 
 	def play_round
 		print_board
 		prompt_player
-	end
+		@move = prompt_move		
+	end		
 
 	def intro_message
 		intro = <<-INTRO
@@ -58,20 +58,21 @@ INTRO
 	end
 
 	def prompt_player
-		puts "\e[37m#{@current_player.name} pick a column:"
+		puts "\e[37m#{@current_player.name} pick a column:"		
 	end
 
 	def prompt_move
-		loop do		
-			@move = gets.chomp.to_i
-			return @move if valid_move?(move)					
-			puts "Invalid input. Enter a column number between 1 and 7"
-		end
-	end
+    loop do
+      @move = gets.chomp.to_i
+      return @move if valid_move?(@move)
 
-	def valid_move?(move)
-		@move.is_a?(Integer) && @move.between?(1, 7)
-	end
+      puts "Invalid input. Enter a column number between 1 and 7"
+    end
+  end
+
+	def valid_move?(_move)
+    @move.is_a?(Integer) && @move.between?(1, 7)
+  end
 	
 	def print_board
 		puts 
@@ -82,7 +83,7 @@ INTRO
 			end
 			print "\n"
 		end
-		puts "\u001b[96m0 1 2 3 4 5 6"
+		puts "\u001b[96m1 2 3 4 5 6 7"
 		puts		
 	end	
 end
