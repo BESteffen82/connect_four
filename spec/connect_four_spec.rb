@@ -44,28 +44,39 @@ describe ConnectFour do
 	describe '#prompt_move' do
 		context 'move is a valid input' do
 			before do
-				allow(game).to receive(:gets).and_return('3\n')
+				allow(game).to receive(:gets).and_return("3\n")
 			end
-			
+
 			it 'returns move and stops the loop' do
 				error_message = 'Invalid input. Enter a column number between 1 and 7'
-				expect(game).to_not receive(:puts).with(error_message)				
+				expect(game).to_not receive(:puts).with(error_message)
 				game.prompt_move
 			end
 		end
-			
+
 		context 'when given one invalid input, then a valid input' do
 			before do
 				letter = 'a'
-				valid_input = '2'
+				valid_input = '1'
 				allow(game).to receive(:gets).and_return(letter, valid_input)
 			end
 
-			it 'completes loop and displays error message once' do				
-				error_message = 'Invalid input. Enter a column number between 1 and 7'				
+			it 'completes loop and displays error message once' do
+				error_message = 'Invalid input. Enter a column number between 1 and 7'
 				expect(game).to receive(:puts).with(error_message).once
 				game.prompt_move
 			end
 		end
 	end
+
+	describe '#place_marker' do
+		context 'when column is empty' do
+			it 'places marker on bottom row' do
+				move = 4
+				expect{game.place_marker}.to change{game.board[5][3]}
+			end
+		end
+	end
 end
+
+	
