@@ -4,7 +4,6 @@ require 'pry-byebug'
 class ConnectFour	
 	attr_accessor :player_one, :player_two, :move, :current_player, :board
 
-
 	EMPTY_CIRCLE = "\e[37m\u25cb".freeze
 	YELLOW_CIRCLE = "\u001b[33m\u25cf".freeze
 	RED_CIRCLE = "\u001b[31m\u25cf".freeze
@@ -70,9 +69,15 @@ INTRO
     end
   end
 
-	def valid_move?(_move)
+	def valid_move?(move)
     @move.is_a?(Integer) && @move.between?(1, 7)
   end
+
+	def place_marker
+		if @board[5][@move - 1] == EMPTY_CIRCLE
+			@board[5][@move - 1] = @current_player.marker
+		end
+	end
 	
 	def print_board
 		puts 
@@ -88,5 +93,5 @@ INTRO
 	end	
 end
 
-new_game = ConnectFour.new
-new_game.play_game
+#new_game = ConnectFour.new
+#new_game.play_game
