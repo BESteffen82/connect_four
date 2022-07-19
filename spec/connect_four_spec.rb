@@ -69,17 +69,43 @@ describe ConnectFour do
 		end
 	end
 
+	describe '#change_current_player' do
+		context 'when player_one turn is over' do
+			before do
+				game.instance_variable_set(:@player_one, instance_double(Player))
+				game.instance_variable_set(:@player_two, instance_double(Player))
+			end
+
+			it 'switches turns from player_one to player_two' do
+				game.instance_variable_set(:@current_player, game.player_one)				
+				expect{game.change_current_player}.to change{game.current_player}.to(game.player_two)
+			end		
+		end
+	end
+
 	describe '#place_marker' do		
 		context 'when column is empty' do			
 			before do															
 				game.instance_variable_set(:@move, 4)
-				current_marker = game.instance_variable_set(:@current_marker, "\u001b[33m\u25cf")				
+				game.instance_variable_set(:@player_one, instance_double(Player))				
 			end
 
-			it 'places marker on bottom row' do												
-				expect{game.place_marker}.to change{game.board[5][3]}
-				game.place_marker		
+			it 'places marker on bottom row' do				
+				game.instance_variable_set(:@current_player, game.player_one)						
+				expect{game.place_marker}.to change{game.board[5][3]}						
 			end
+		end
+
+		context 'when column is not empty, but filled with one marker' do
+			before do
+				game.instance_variable_set(:@move, 3)
+				game.board[5][2] = "\u001b[31m\u25cf"
+			end
+
+			it 'places marker on places marker on second row' do
+				expect{game.place_marker}.to change{game.board[4][2]}
+				game.place_marker
+			end		
 		end
 	end
 end
