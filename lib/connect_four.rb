@@ -1,4 +1,4 @@
-require_relative './player'
+require_relative 'player'
 require 'pry-byebug'
 
 class ConnectFour	
@@ -11,14 +11,15 @@ class ConnectFour
 	def initialize
 		@board = Array.new(6){Array.new(7,EMPTY_CIRCLE)}
 		@player_one = nil  
-		@player_two = nil				
+		@player_two = nil					
 	end
 
 	def setup_game
 		intro_message
 		create_player_one
 		create_player_two
-		@current_player = [@player_one, @player_two].sample		
+		@current_player = [@player_one, @player_two].sample
+		@current_player.marker		
 	end
 
 	def play_game		
@@ -29,7 +30,9 @@ class ConnectFour
 	def play_round
 		print_board
 		prompt_player
-		@move = prompt_move		
+		@move = prompt_move
+		place_marker
+		binding.pry					
 	end		
 
 	def intro_message
@@ -65,7 +68,7 @@ INTRO
       @move = gets.chomp.to_i
       return @move if valid_move?(@move)
 
-      puts "Invalid input. Enter a column number between 1 and 7"
+      puts "Invalid input. Enter a column number between 1 and 7"			
     end
   end
 
@@ -73,9 +76,9 @@ INTRO
     @move.is_a?(Integer) && @move.between?(1, 7)
   end
 
-	def place_marker
+	def place_marker								
 		if @board[5][@move - 1] == EMPTY_CIRCLE
-			@board[5][@move - 1] = @current_player.marker
+			@board[5][@move - 1] = @current_marker
 		end
 	end
 	
@@ -92,6 +95,3 @@ INTRO
 		puts		
 	end	
 end
-
-#new_game = ConnectFour.new
-#new_game.play_game
