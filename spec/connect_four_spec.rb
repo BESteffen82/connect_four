@@ -69,11 +69,16 @@ describe ConnectFour do
 		end
 	end
 
-	describe '#place_marker' do
-		context 'when column is empty' do
-			it 'places marker on bottom row' do
-				move = 4
+	describe '#place_marker' do		
+		context 'when column is empty' do			
+			before do															
+				game.instance_variable_set(:@move, 4)
+				current_marker = game.instance_variable_set(:@current_marker, "\u001b[33m\u25cf")				
+			end
+
+			it 'places marker on bottom row' do												
 				expect{game.place_marker}.to change{game.board[5][3]}
+				game.place_marker		
 			end
 		end
 	end
