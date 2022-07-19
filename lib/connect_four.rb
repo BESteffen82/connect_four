@@ -11,15 +11,14 @@ class ConnectFour
 	def initialize
 		@board = Array.new(6){Array.new(7,EMPTY_CIRCLE)}
 		@player_one = nil  
-		@player_two = nil					
+		@player_two = nil							
 	end
 
 	def setup_game
 		intro_message
 		create_player_one
 		create_player_two
-		@current_player = [@player_one, @player_two].sample
-		@current_player.marker		
+		@current_player = [@player_one, @player_two].sample						
 	end
 
 	def play_game		
@@ -28,11 +27,15 @@ class ConnectFour
 	end
 
 	def play_round
-		print_board
-		prompt_player
-		@move = prompt_move
-		place_marker
-		binding.pry					
+		loop do
+			print_board
+			prompt_player
+			@move = prompt_move
+			@current_marker = @current_player.marker
+			place_marker
+			change_current_player
+			#binding.pry			
+		end						
 	end		
 
 	def intro_message
@@ -59,6 +62,10 @@ INTRO
 		puts "\n"
 	end
 
+	def change_current_player
+		@current_player = @current_player == @player_one? @player_two: @player_one				
+	end
+
 	def prompt_player
 		puts "\e[37m#{@current_player.name} pick a column:"		
 	end
@@ -76,7 +83,7 @@ INTRO
     @move.is_a?(Integer) && @move.between?(1, 7)
   end
 
-	def place_marker								
+	def place_marker												
 		if @board[5][@move - 1] == EMPTY_CIRCLE
 			@board[5][@move - 1] = @current_marker
 		end
