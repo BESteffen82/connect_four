@@ -34,7 +34,7 @@ class ConnectFour
 			@current_marker = @current_player.marker
 			place_marker
 			change_current_player
-			#binding.pry			
+			connected_row		
 		end						
 	end		
 
@@ -80,13 +80,61 @@ INTRO
   end
 
 	def valid_move?(move)
-    @move.is_a?(Integer) && @move.between?(1, 7)
+    @move.is_a?(Integer) && @move.between?(1, 7) && @board[0][@move - 1] == EMPTY_CIRCLE
   end
 
-	def place_marker												
-		if @board[5][@move - 1] == EMPTY_CIRCLE
-			@board[5][@move - 1] = @current_marker
+	def place_marker
+		for i in 5.downto(0)
+			if @board[i][@move - 1] != EMPTY_CIRCLE
+				next														
+			else @board[i][@move - 1] = @current_marker
+				return @board
+			end
 		end
+	end
+	
+	def connected_four?
+		return true if connected_row		
+		return true if connected_column
+		false
+	end
+
+	def connected_row
+		count = 0
+		@board.each do |row|
+			for i in 0..5			
+				unless row[i] == EMPTY_CIRCLE				
+					if row[i] == row[i + 1] 
+						count += 1						
+						if count == 3
+							return true
+						end
+					else
+						count = 0					
+					end					
+				end
+			end			
+		end				
+		false
+	end
+
+	def connected_column
+		count = 0		
+		for i in 0..5
+			for j in 0..4
+				unless @board[j][i] == EMPTY_CIRCLE
+					if @board[j][i] == @board[j + 1][i]
+						count += 1
+						if count == 3 
+							return true
+						end
+					else 
+						count = 0 
+					end				
+				end
+			end				
+		end
+		false
 	end
 	
 	def print_board
