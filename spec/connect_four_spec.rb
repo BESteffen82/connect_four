@@ -98,14 +98,70 @@ describe ConnectFour do
 
 		context 'when column is not empty, but filled with one marker' do
 			before do
+				RED_CIRCLE = "\u001b[31m\u25cf"					
+				game.board[5][2] = RED_CIRCLE				
 				game.instance_variable_set(:@move, 3)
-				game.board[5][2] = "\u001b[31m\u25cf"
+				game.instance_variable_set(:@player_two, instance_double(Player))				
 			end
 
-			it 'places marker on places marker on second row' do
-				expect{game.place_marker}.to change{game.board[4][2]}
-				game.place_marker
+			it 'places marker on places marker on second row' do				
+				game.instance_variable_set(:@current_player, game.player_two)						
+				expect{game.place_marker}.to change{game.board[4][2]}							
 			end		
+		end	
+	end
+	
+	describe '#connected_four?' do
+		context 'when four markers are in a row' do
+			before do				
+				game.board[2][3] = RED_CIRCLE
+				game.board[2][4] = RED_CIRCLE
+				game.board[2][5] = RED_CIRCLE
+				game.board[2][6] = RED_CIRCLE				
+			end
+
+			it 'returns true' do
+				expect(game.connected_four?).to be true
+			end
+		end
+
+		context 'when there are no rows of four markers' do
+			before do				
+				game.board[2][1] = RED_CIRCLE
+				game.board[2][4] = RED_CIRCLE
+				game.board[2][5] = RED_CIRCLE
+				game.board[2][6] = RED_CIRCLE				
+			end
+
+			it 'returns false' do
+				expect(game.connected_four?).to be false
+			end
+		end
+
+		context 'when four markers are in a column' do
+			before do
+				game.board[4][1] = RED_CIRCLE
+				game.board[3][1] = RED_CIRCLE
+				game.board[2][1] = RED_CIRCLE
+				game.board[1][1] = RED_CIRCLE			
+			end
+
+			it 'returns true' do
+				expect(game.connected_four?).to be true
+			end
+		end
+
+		context 'when there are no columns of four markers' do
+			before do
+				game.board[5][1] = RED_CIRCLE
+				game.board[3][1] = RED_CIRCLE
+				game.board[2][1] = RED_CIRCLE
+				game.board[1][1] = RED_CIRCLE			
+			end
+
+			it 'returns false' do
+				expect(game.connected_four?).to be false
+			end
 		end
 	end
 end
