@@ -34,7 +34,7 @@ class ConnectFour
 			@current_marker = @current_player.marker
 			place_marker
 			change_current_player
-			connected_row		
+			connected_four?	
 		end						
 	end		
 
@@ -110,6 +110,7 @@ INTRO
 					if row[i] == row[i + 1] 
 						count += 1						
 						if count == 3
+							@winner_marker = row[i]
 							return true
 						end
 					else
@@ -130,7 +131,8 @@ INTRO
 				unless @board[j][i] == EMPTY_CIRCLE
 					if @board[j][i] == @board[j + 1][i]
 						count += 1
-						if count == 3 
+						if count == 3
+							@winner_marker = @board[j][i] 
 							return true
 						end
 					else 
@@ -158,6 +160,7 @@ INTRO
 						@board [j][i] == @board [j - 2][i + 2] &&
 						@board [j][i] == @board [j - 3][i + 3]
 
+						@winner_marker = @board[j][i]
 						return true
 					else
 						next
@@ -177,12 +180,21 @@ INTRO
 						@board [j][i] == @board [j + 2][i + 2] &&
 						@board [j][i] == @board [j + 3][i + 3]
 
+						@winner_marker = @board[j][i]
 						return true
 					else
 						next
 					end					
 				end
 			end
+		end
+
+		false
+	end
+
+	def board_full
+		unless @board[0].include?(EMPTY_CIRCLE)
+			return true
 		end
 
 		false
