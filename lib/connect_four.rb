@@ -96,11 +96,14 @@ INTRO
 	def connected_four?
 		return true if connected_row		
 		return true if connected_column
+		return true if connected_diagonally
+
 		false
 	end
 
 	def connected_row
 		count = 0
+
 		@board.each do |row|
 			for i in 0..5			
 				unless row[i] == EMPTY_CIRCLE				
@@ -114,12 +117,14 @@ INTRO
 					end					
 				end
 			end			
-		end				
+		end
+
 		false
 	end
 
 	def connected_column
-		count = 0		
+		count = 0	
+
 		for i in 0..5
 			for j in 0..4
 				unless @board[j][i] == EMPTY_CIRCLE
@@ -134,6 +139,52 @@ INTRO
 				end
 			end				
 		end
+
+		false
+	end
+
+	def connected_diagonally
+		return true if connected_diagonally_upward
+		return true if connected_diagonally_downward
+		
+		false
+	end
+
+	def connected_diagonally_upward		
+		for i in 0..3
+			for j in 5.downto(3)
+				unless @board[j][i] == EMPTY_CIRCLE
+					if @board [j][i] == @board [j - 1][i + 1] &&
+						@board [j][i] == @board [j - 2][i + 2] &&
+						@board [j][i] == @board [j - 3][i + 3]
+
+						return true
+					else
+						next
+					end					
+				end
+			end
+		end
+
+		false
+	end
+
+	def connected_diagonally_downward		
+		for i in 0..3
+			for j in 0..2
+				unless @board[j][i] == EMPTY_CIRCLE
+					if @board [j][i] == @board [j + 1][i + 1] &&
+						@board [j][i] == @board [j + 2][i + 2] &&
+						@board [j][i] == @board [j + 3][i + 3]
+
+						return true
+					else
+						next
+					end					
+				end
+			end
+		end
+
 		false
 	end
 	
