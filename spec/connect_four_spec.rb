@@ -189,6 +189,55 @@ describe ConnectFour do
 				expect(game.connected_four?).to be true
 			end
 		end
+
+		context 'when there are not four markers connected diagonally' do
+			before do
+				game.board[1][4] = RED_CIRCLE
+				game.board[2][2] = RED_CIRCLE
+				game.board[3][3] = RED_CIRCLE
+				game.board[4][4] = RED_CIRCLE
+			end
+			
+			it 'returns true' do
+				expect(game.connected_four?).to be false
+			end
+		end
+	end
+
+	describe '#board_full' do
+		context 'when there are no empty slots' do
+			before do				
+				YELLOW_CIRCLE = "\u001b[33m\u25cf"
+				game.board[0][0] = RED_CIRCLE
+				game.board[0][1] = YELLOW_CIRCLE
+				game.board[0][2] = RED_CIRCLE
+				game.board[0][3] = YELLOW_CIRCLE
+				game.board[0][4] = RED_CIRCLE
+				game.board[0][5] = YELLOW_CIRCLE
+				game.board[0][6] = RED_CIRCLE
+			end
+			
+			it 'returns true' do
+				expect(game.board_full).to be true
+			end
+		end
+
+		context 'when there are empty slots' do
+			before do
+				EMPTY_CIRCLE = "\e[37m\u25cb"								
+				game.board[0][0] = RED_CIRCLE
+				game.board[0][1] = YELLOW_CIRCLE
+				game.board[0][2] = RED_CIRCLE
+				game.board[0][3] = EMPTY_CIRCLE
+				game.board[0][4] = RED_CIRCLE
+				game.board[0][5] = YELLOW_CIRCLE
+				game.board[0][6] = EMPTY_CIRCLE
+			end
+			
+			it 'returns true' do
+				expect(game.board_full).to be false
+			end
+		end
 	end
 end
 
