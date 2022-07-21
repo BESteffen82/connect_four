@@ -112,7 +112,7 @@ describe ConnectFour do
 	end
 	
 	describe '#connected_four?' do
-		context 'when four markers are in a row' do
+		context 'when four markers are connected in a row' do
 			before do				
 				game.board[2][3] = RED_CIRCLE
 				game.board[2][4] = RED_CIRCLE
@@ -125,7 +125,7 @@ describe ConnectFour do
 			end
 		end
 
-		context 'when there are no rows of four markers' do
+		context 'when there are no rows of four connected markers' do
 			before do				
 				game.board[2][1] = RED_CIRCLE
 				game.board[2][4] = RED_CIRCLE
@@ -138,7 +138,7 @@ describe ConnectFour do
 			end
 		end
 
-		context 'when four markers are in a column' do
+		context 'when four markers are connected in a column' do
 			before do
 				game.board[4][1] = RED_CIRCLE
 				game.board[3][1] = RED_CIRCLE
@@ -151,7 +151,7 @@ describe ConnectFour do
 			end
 		end
 
-		context 'when there are no columns of four markers' do
+		context 'when there are no columns of four connected markers' do
 			before do
 				game.board[5][1] = RED_CIRCLE
 				game.board[3][1] = RED_CIRCLE
@@ -161,6 +161,32 @@ describe ConnectFour do
 
 			it 'returns false' do
 				expect(game.connected_four?).to be false
+			end
+		end
+
+		context 'when there are four markers connected diagonally upward' do
+			before do
+				game.board[5][2] = RED_CIRCLE
+				game.board[4][3] = RED_CIRCLE
+				game.board[3][4] = RED_CIRCLE
+				game.board[2][5] = RED_CIRCLE
+			end
+			
+			it 'returns true' do
+				expect(game.connected_four?).to be true
+			end
+		end
+
+		context 'when there are four markers connected diagonally downward' do
+			before do
+				game.board[1][1] = RED_CIRCLE
+				game.board[2][2] = RED_CIRCLE
+				game.board[3][3] = RED_CIRCLE
+				game.board[4][4] = RED_CIRCLE
+			end
+			
+			it 'returns true' do
+				expect(game.connected_four?).to be true
 			end
 		end
 	end
